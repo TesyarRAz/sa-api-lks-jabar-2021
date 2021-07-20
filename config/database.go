@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/TesyarRAz/sa-api-lks-jabar-2021/model"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -12,7 +12,8 @@ type Database struct {
 }
 
 func NewDatabase() *Database {
-	db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:3306)/sa_api_lks_jabar_2021?parseTime=true"))
+	// db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:3306)/sa_api_lks_jabar_2021?parseTime=true"))
+	db, err := gorm.Open(sqlite.Open("database.db"))
 
 	if err != nil {
 		panic("Cant connect to database")

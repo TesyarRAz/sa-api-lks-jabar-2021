@@ -1,16 +1,10 @@
 package main
 
 import (
-	"net"
-
 	"github.com/TesyarRAz/sa-api-lks-jabar-2021/config"
 	"github.com/TesyarRAz/sa-api-lks-jabar-2021/controller"
 	"github.com/TesyarRAz/sa-api-lks-jabar-2021/middleware"
 	"github.com/gin-gonic/gin"
-)
-
-const (
-	userKey = "user"
 )
 
 func main() {
@@ -38,10 +32,12 @@ func main() {
 
 	addr := ":3000"
 
-	in, err := net.Listen("tcp4", addr)
-	if err != nil {
-		panic(err.Error())
-	}
+	r.Run(addr)
 
-	r.RunListener(in)
+	// in, err := net.Listen("tcp4", addr)
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+
+	// r.RunListener(in)
 }

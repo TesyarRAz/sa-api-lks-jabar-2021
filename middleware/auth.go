@@ -11,17 +11,24 @@ import (
 
 func AuthorizedUser(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
-	token := strings.Split(c.GetHeader("Authorization"), "Bearer ")[1]
+	authorization := c.GetHeader("Authorization")
 
-	var user model.User
+	if len(authorization) > 0 {
+		splitToken := strings.Split(authorization, "Bearer ")
 
-	if err := db.First(&user, "token = ?", token).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "unauthorized",
-		})
+		if len(splitToken) > 0 {
+			token := splitToken[1]
+			var user model.User
 
-		return
+			if err := db.First(&user, "token = ?", token).Error; err == nil {
+				c.Set("user", &user)
+
+				return
+			}
+		}
 	}
 
-	c.Set("user", &user)
+	c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+		"error": "unauthorized",
+	})
 }
